@@ -45,14 +45,14 @@ window.addEventListener("keyup", (e)=>{
 
 var game = new Game();
 
-// setInterval(() => {
-//     if(game.animateFrame){
-//         game.initGame()
-//     } else {
-//         game.initGame()
-//         game.animate()
-//     }
-// }, 500)
+setInterval(() => {
+    if(game.animateFrame){
+        game.initGame()
+    } else {
+        game.initGame()
+        game.animate()
+    }
+}, 100)
 
 function Game() {
     this.gravity = 0.1;
@@ -130,12 +130,22 @@ function Game() {
         // ctx.fillStyle = "black";
         // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        // //check oderly
+        // if( this.circleArray ){
+        //     i = this.circleArray.length-1;
+        // }
+        // for (var i = 0; i < this.circleArray.length; i++) {
+        //     this.circleArray[i].update(this.circleArray, i, this.slowMotion);
+        // }
+
+        //check reverse
         var i = -1;
         if( this.circleArray ){
             i = this.circleArray.length-1;
         }
         for (i; i !== -1; i--) {
             this.circleArray[i].update(this.circleArray, i, this.slowMotion);
+            // this.circleArray[i].checkConllision(this.circleArray, i, this.slowMotion);
         }
     }
 
@@ -306,15 +316,13 @@ function Circle(x, y, dx, dy, radius, gravity, bounding, index) {
         }
         
 
-        this.x += slowMotion ? this.dx / 4 : this.dx;
-        this.y += slowMotion ? this.dy / 4 : this.dy;
-        object2.x += slowMotion ? object2.dx / 4 : object2.dx;
-        object2.y += slowMotion ? object2.dy / 4 : object2.dy;
+        // this.x += slowMotion ? this.dx / 4 : this.dx;
+        // this.y += slowMotion ? this.dy / 4 : this.dy;
+        // object2.x += slowMotion ? object2.dx / 4 : object2.dx;
+        // object2.y += slowMotion ? object2.dy / 4 : object2.dy;
     }
 
     this.update = function (conllisionObj, index , slowMotion) {
-        
-
         if (this.x + this.radius > canvas.width || this.x < this.radius) {
             this.x = this.x - this.dx * (1 - this.bounding);
             this.dx = -this.dx;
@@ -342,7 +350,22 @@ function Circle(x, y, dx, dy, radius, gravity, bounding, index) {
         } else {
             this.dy += gravity;
         }
+        
+       ////check oderly
+        // if (conllisionObj.length) {
+        //     var i = index + 1;
+        //     while ( i < conllisionObj.length ) {
+        //         // if(index === undefined || i!== index){
+        //         if (this.isConllision(conllisionObj[i])) {
+        //             // console.log('conllistion')
+        //             this.solveConllision(conllisionObj[i], slowMotion)
+        //         }
+        //         i++;
+        //         // }
+        //     }
+        // }
 
+        //check reverse
         if (conllisionObj.length) {
             var i = index - 1;
             while ( i > -1 ) {
@@ -355,10 +378,6 @@ function Circle(x, y, dx, dy, radius, gravity, bounding, index) {
                 // }
             }
         }
-
-       
-
-        
 
         if (this.motionBlur) {
             if (Math.sqrt(this.dx * this.dx + this.dy * this.dy) > (this.radius * 1.5)) {
